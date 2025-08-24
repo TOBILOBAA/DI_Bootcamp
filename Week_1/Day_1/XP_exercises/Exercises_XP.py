@@ -48,7 +48,7 @@ else:
 
 username = input("What is your name?") 
 
-if username != "Tobi":
+if username == "Tobi":
     print("oppa! we got the same name lol!")
 else:
     print(f"Hey {username} nice to meet you!")
@@ -61,6 +61,6 @@ if user_height > 145:
     print("Congrats, you are all tall enough for the ride.")
 else:
     print("sorry, you gonna hvae to grow some more to ride. Yikes!")
-64
+
 
 
