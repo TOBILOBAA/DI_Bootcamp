@@ -1,61 +1,61 @@
-# # Exercise 1: What Are You Learning?
-# def display_message():
-#     print("I am learning about funtions in Python.")
-# display_message()
+# Exercise 1: What Are You Learning?
+def display_message():
+    print("I am learning about funtions in Python.")
+display_message()
 
 
-# # Exercise 2: What’s Your Favorite Book?
-# def favorite_book(title):
-#     print(f"One of my favorite books is {title}")
-# favorite_book("Alice in Wonderland")
+# Exercise 2: What’s Your Favorite Book?
+def favorite_book(title):
+    print(f"One of my favorite books is {title}")
+favorite_book("Alice in Wonderland")
 
 
-# # Exercise 3: Some Geography
+# Exercise 3: Some Geography
 
-# def describe_city(city, country = "Unknown"):
-#     print(f"{city} is in {country}.")
+def describe_city(city, country = "Unknown"):
+    print(f"{city} is in {country}.")
 
-# describe_city("Tel Aviv", "Israel")
-# describe_city("Tel Aviv")
+describe_city("Tel Aviv", "Israel")
+describe_city("Tel Aviv")
 
-# # Exercise 4: Random
-# import random 
+# Exercise 4: Random
+import random 
 
-# def number(num):
-#     if 1 <= num <= 100:
-#         random_num = random.randint(1,100)
-#         if num == random_num:
-#             print("Success! Number Match! YAAYYY")
-#         else:
-#             print(f"Fail! Your number: {num}, Random number:{random_num}")
+def number(num):
+    if 1 <= num <= 100:
+        random_num = random.randint(1,100)
+        if num == random_num:
+            print("Success! Number Match! YAAYYY")
+        else:
+            print(f"Fail! Your number: {num}, Random number:{random_num}")
 
-# number(91)
+number(91)
 
-# # Exercise 5: Let’s Create Some Personalized Shirts!
-# def make_shirt(size = "large", text = "I love Python"):
-#     print(f"Your shirt size is {size} and you {text} it well!")
+# Exercise 5: Let’s Create Some Personalized Shirts!
+def make_shirt(size = "large", text = "I love Python"):
+    print(f"Your shirt size is {size} and you {text} it well!")
 
-# make_shirt("small", "rock")
-# make_shirt("large", "I love Python")
-# make_shirt("medium", "I love Python")
-# make_shirt("small", "I love Java")
-# make_shirt()
+make_shirt("small", "rock")
+make_shirt("large", "I love Python")
+make_shirt("medium", "I love Python")
+make_shirt("small", "I love Java")
+make_shirt()
 
 # Exercise 6: Magicians…
-# magician_names = ["Harry Houdini", "David Blaine", "Criss Angel"]
+magician_names = ["Harry Houdini", "David Blaine", "Criss Angel"]
 
-# def show_magicians(magician_names):
-#     for item in magician_names:
-#         print(item)
-# show_magicians(magician_names)
+def show_magicians(magician_names):
+    for item in magician_names:
+        print(item)
+show_magicians(magician_names)
 
 
-# def make_great(magician_names):
-#     for i in range(len(magician_names)):
-#         magician_names[i] += " the Great"
+def make_great(magician_names):
+    for i in range(len(magician_names)):
+        magician_names[i] += " the Great"
 
-# make_great(magician_names)
-# show_magicians(magician_names)
+make_great(magician_names)
+show_magicians(magician_names)
 
 # Exercise 7: Temperature Advice
 import random 
