@@ -1,105 +1,97 @@
-# Exercise 1: Converting Lists into Dictionaries
-keys = ['Ten', 'Twenty', 'Thirty']
-values = [10, 20, 30]
+# # Exercise 1: What Are You Learning?
+# def display_message():
+#     print("I am learning about funtions in Python.")
+# display_message()
 
-my_dict = dict(zip(keys, values))
-print(my_dict)
 
-# Exercise 2: Cinemax #2
-family = {"rick": 43, 'beth': 13, 'morty': 5, 'summer': 8}
-total_tickets = 0
-for names, ages in family.items(): 
-    if ages < 3:
-        amount = 0
-    elif ages >= 3 and ages <= 12:
-        amount = 10
+# # Exercise 2: What’s Your Favorite Book?
+# def favorite_book(title):
+#     print(f"One of my favorite books is {title}")
+# favorite_book("Alice in Wonderland")
+
+
+# # Exercise 3: Some Geography
+
+# def describe_city(city, country = "Unknown"):
+#     print(f"{city} is in {country}.")
+
+# describe_city("Tel Aviv", "Israel")
+# describe_city("Tel Aviv")
+
+# # Exercise 4: Random
+# import random 
+
+# def number(num):
+#     if 1 <= num <= 100:
+#         random_num = random.randint(1,100)
+#         if num == random_num:
+#             print("Success! Number Match! YAAYYY")
+#         else:
+#             print(f"Fail! Your number: {num}, Random number:{random_num}")
+
+# number(91)
+
+# # Exercise 5: Let’s Create Some Personalized Shirts!
+# def make_shirt(size = "large", text = "I love Python"):
+#     print(f"Your shirt size is {size} and you {text} it well!")
+
+# make_shirt("small", "rock")
+# make_shirt("large", "I love Python")
+# make_shirt("medium", "I love Python")
+# make_shirt("small", "I love Java")
+# make_shirt()
+
+# Exercise 6: Magicians…
+# magician_names = ["Harry Houdini", "David Blaine", "Criss Angel"]
+
+# def show_magicians(magician_names):
+#     for item in magician_names:
+#         print(item)
+# show_magicians(magician_names)
+
+
+# def make_great(magician_names):
+#     for i in range(len(magician_names)):
+#         magician_names[i] += " the Great"
+
+# make_great(magician_names)
+# show_magicians(magician_names)
+
+# Exercise 7: Temperature Advice
+import random 
+
+def get_random_temp(month):
+    if month in (12, 1, 2):
+        return random.uniform(-10,10)
+    elif month in (3, 4, 5):
+        return random.uniform(10,10)
+    elif month in (6, 7, 8):
+        return random.uniform(20, 40)
+    elif month in (9, 10, 11):
+        return random.uniform(5, 25)
     else:
-        amount = 15
-    print(f"{names}'s ticket price: ${amount}")
-    total_tickets += amount
-print(total_tickets)
+        print("Month must be an integer from 1 to 12")
 
-# Bonus
-names = input("Please input the names of your families seperated but commas: ").split(",")
-ages = input("Please input the ages of your family members consecively seperated but commas: ").split(",")
-
-names = [n.strip() for n in names]
-ages = [int(a.strip())for a in ages]
-
-family_dict = dict(zip(names, ages))
-
-total_tickets = 0
-for names, ages in family_dict.items(): 
-    if ages < 3:
-        amount = 0
-    elif ages >= 3 and ages <= 12:
-        amount = 10
+def give_advice(temp):
+    if temp <= 0:
+        print("Brrr, that’s freezing! Wear some extra layers today.")
+    elif  0 < temp <= 16:
+        print("Quite chilly! Don’t forget your coat.")
+    elif 16 == temp <= 23:
+        print("Nice weather.")
+    elif 24 == temp <= 32:
+        print("A bit warm, stay hydrated.")
     else:
-        amount = 15
-    print(f"{names}'s ticket price: ${amount}")
-    total_tickets += amount
-print(total_tickets)
+        print("It’s really hot! Stay cool.")
 
-# Exercise 3: Zara
-brand = {
-    "name": "Zara",
-    "creation_date": 1975,
-    "creator_name": "Amancio Ortega Gaona",
-    "type_of_clothes": ["men", "women", "children", "home"],
-    "international_competitors": ["Gap", "H&M", "Benetton"],
-    "number_stores": 7000,
-    "major_color": {
-            "France": "blue",
-            "Spain": "red",
-            "US": ["pink", "green"]
-    }        
-}
-
-brand.update({"number_stores": 2})
-print(brand)
-
-print(f"{brand["name"]} has clothes for {brand["type_of_clothes"]}, check them out!")
-
-brand.update({"country_creation": "Spain"})
-print(brand)
-
-if "international_competitors" in brand:
-    brand.update({"international_competitors": "Desigual"})
-    print(brand)
-
-del brand["creation_date"]
-print(brand)
-
-print(brand["international_competitors"][-1])
-
-print(brand["major_color"]["US"])
-
-print(len(brand))
-
-for keys in brand.keys():
-    print(keys)
+def main():
+    user_input = int(input("Enter your current month as a number (1-12): "))
+    if 1 <= user_input <= 12: 
+        temp = get_random_temp(user_input)
+        print(f"The temperature right now is {temp}°C degree Celsius.")
+    else:
+        print("Invalid month!")
+    
+main()
 
 
-# Bonus
-more_on_zara = {
-    "creation_date": 2025,
-    "number_stores": 8,
-}
-
-brand.update(more_on_zara)
-print(brand)
-
-
-# Exercise 4: Disney Characters
-
-users = ["Mickey", "Minnie", "Donald", "Ariel", "Pluto"]
-
-dict1 = {name: index for index, name in enumerate(users)}
-print(dict1)
-
-dict2 = {index: name for index, name in enumerate(users)}
-print(dict2)
-
-sorted_users = sorted(users)
-dict3 = {name: index for index, name in enumerate(sorted_users)}
-print(dict3)

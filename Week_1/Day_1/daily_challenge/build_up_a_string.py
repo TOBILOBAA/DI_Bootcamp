@@ -16,9 +16,9 @@ for i in range(1, len(user_input) + 1):
 
 import random
 chars = list(user_input)
-random.shuffle(char)
-shuffleed_string = '.'
-print(user_input)    
+random.shuffle(chars)
+shuffled_string = ''.join(chars)
+print(shuffled_string)    
 
 
 
