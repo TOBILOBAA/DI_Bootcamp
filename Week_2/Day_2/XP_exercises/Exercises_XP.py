@@ -1,64 +1,64 @@
 # Exercise 1: Pets
-# class Pets():
-#     def __init__(self, animals):
-#          self.animals = animals
-#     def walk(self):
-#         for animal in self.animals:
-#             print(animal.walk())
+class Pets():
+    def __init__(self, animals):
+         self.animals = animals
+    def walk(self):
+        for animal in self.animals:
+            print(animal.walk())
 
-# class Cat:
-#     def __init__(self, name, age):
-#         self.name = name 
-#         self.age = age 
+class Cat:
+    def __init__(self, name, age):
+        self.name = name 
+        self.age = age 
     
-#     def walk(self):
-#         return f"{self.name} is walking"
+    def walk(self):
+        return f"{self.name} is walking"
 
-# class Bengal(Cat):
-#    pass
+class Bengal(Cat):
+   pass
 
-# class Chartreux(Cat):
-#    pass
+class Chartreux(Cat):
+   pass
 
-# class Simaese(Cat):
-#    pass
+class Simaese(Cat):
+   pass
 
-# bengal_obj = Bengal("Mikky", 4)
-# chartreux_obj = Chartreux("kate", 2)
-# simaese_obj = Simaese("Lily", 3)
+bengal_obj = Bengal("Mikky", 4)
+chartreux_obj = Chartreux("kate", 2)
+simaese_obj = Simaese("Lily", 3)
 
-# all_cats = [bengal_obj, chartreux_obj, simaese_obj]
+all_cats = [bengal_obj, chartreux_obj, simaese_obj]
 
-# sara_pets = Pets(all_cats)
+sara_pets = Pets(all_cats)
 
-# sara_pets.walk()
+sara_pets.walk()
 
 
 
 # Exercise 2: Dogs
-# class Dog:
-#     def __init__(self, name, age, weight):
-#         self.name = name 
-#         self.age = age 
-#         self.weight = weight
+class Dog:
+    def __init__(self, name, age, weight):
+        self.name = name 
+        self.age = age 
+        self.weight = weight
     
-#     def bark(self):
-#         return f"{self.name} is barking"
+    def bark(self):
+        return f"{self.name} is barking"
     
-#     def run_speed(self):
-#         return self.weight / self.age * 10
+    def run_speed(self):
+        return self.weight / self.age * 10
     
-#     def fight(self, other_dog):
-#         return self.run_speed() * self.weight - other_dog.run_speed() * other_dog.weight
+    def fight(self, other_dog):
+        return self.run_speed() * self.weight - other_dog.run_speed() * other_dog.weight
     
     
-# dog1 = Dog("tom", 3, 54)
-# dog2 = Dog("Tim", 5, 64)
-# dog3= Dog("jake", 2, 85)
+dog1 = Dog("tom", 3, 54)
+dog2 = Dog("Tim", 5, 64)
+dog3= Dog("jake", 2, 85)
 
-# print(dog1.bark())
-# print(dog2.run_speed())
-# print(dog1.fight(dog2))
+print(dog1.bark())
+print(dog2.run_speed())
+print(dog1.fight(dog2))
 
 
 # Exercise 4: Family and Person Classes
