@@ -1,66 +1,107 @@
-# Exercise 1 : Hello World
-print("Hello World\n" * 4)
+# Exercise 1: Pets
+# class Pets():
+#     def __init__(self, animals):
+#          self.animals = animals
+#     def walk(self):
+#         for animal in self.animals:
+#             print(animal.walk())
 
+# class Cat:
+#     def __init__(self, name, age):
+#         self.name = name 
+#         self.age = age 
+    
+#     def walk(self):
+#         return f"{self.name} is walking"
 
-# Exercise 2 : Some Math
-math = (99**3) * 8
-print(math)
+# class Bengal(Cat):
+#    pass
 
+# class Chartreux(Cat):
+#    pass
 
-# Exercise 3 : What is the output ?
-# >>> 5 < 3 ... THIS WILL PRINT FALSE. BECUASE 5 IS NOT LESS THAN 3.
-# >>> 3 == 3 ... THIS WILL BE TRUE BECAUSE 3 IS EQUAL TO 3 
-# >>> 3 == "3" ... THIS WILL BE A FALSE BECUASE INTERGER 3 AND STRING 3 ARENT THE SAME
-# >>> "3" > 3 ... THIS WILL BE A FALSE BECAUSE STRING 3 IS NOT THE SAME AS INTERGER 3 
-# >>> "Hello" == "hello" ... THIS IS A TRUE BECAUSE STRING HELLO IS EQUAL TO STRING HELLO
+# class Simaese(Cat):
+#    pass
 
+# bengal_obj = Bengal("Mikky", 4)
+# chartreux_obj = Chartreux("kate", 2)
+# simaese_obj = Simaese("Lily", 3)
 
-#Exercise 4 : Your computer brand
+# all_cats = [bengal_obj, chartreux_obj, simaese_obj]
 
-computer_brand = "MacBook Pro"
-print(f"I have a {computer_brand} computer.")
+# sara_pets = Pets(all_cats)
 
-
-#Exercise 5 : Your information
-name = "Tobi"
-age = 78
-shoe_size = 45
-
-info = f"{name} is {age} years old, with a {shoe_size} inches shoe size and he loves humor!!"
-
-print(info)
-
-# Exercise 6 : A & B
-a = 4444
-b = 243
-
-if a > b:
-    print("Hello World")
-
-# Exercise 7 : Odd or Even
-user_input = int(input("Give me a number: "))
-if user_input % 2 == 0:
-    print("Number is even")
-else:
-    print("Number is odd")
-
-# Exercise 8 : What’s your name ?
-
-username = input("What is your name?") 
-
-if username == "Tobi":
-    print("oppa! we got the same name lol!")
-else:
-    print(f"Hey {username} nice to meet you!")
-
-# Exercise 9 : Tall enough to ride a roller coaster   
-
-user_height = int(input("Hey what's your height?"))
-
-if user_height > 145:
-    print("Congrats, you are all tall enough for the ride.")
-else:
-    print("sorry, you gonna hvae to grow some more to ride. Yikes!")
+# sara_pets.walk()
 
 
 
+# Exercise 2: Dogs
+# class Dog:
+#     def __init__(self, name, age, weight):
+#         self.name = name 
+#         self.age = age 
+#         self.weight = weight
+    
+#     def bark(self):
+#         return f"{self.name} is barking"
+    
+#     def run_speed(self):
+#         return self.weight / self.age * 10
+    
+#     def fight(self, other_dog):
+#         return self.run_speed() * self.weight - other_dog.run_speed() * other_dog.weight
+    
+    
+# dog1 = Dog("tom", 3, 54)
+# dog2 = Dog("Tim", 5, 64)
+# dog3= Dog("jake", 2, 85)
+
+# print(dog1.bark())
+# print(dog2.run_speed())
+# print(dog1.fight(dog2))
+
+
+# Exercise 4: Family and Person Classes
+
+class Person:
+    def __init__(self, first_name, age, last_name = ""):
+        self.first_name = first_name
+        self.age = age
+        self.last_name = last_name
+
+    def is_18(self):
+        if self.age <= 18:
+            return True
+        else:
+            return False
+        
+class Family:
+    def __init__(self, last_name, members =None):
+        self.last_name = last_name
+        self.members = members if members is not None else []
+
+    def born(self, first_name, age):
+        new_member = Person(first_name, age, self.last_name)        
+        self.members.append(new_member)
+    
+    def check_majority(self, first_name):
+        for member in self.members:
+            if member.first_name == first_name:
+                if member.is_18():
+                    return "You are over 18, your parents Jane and John accept that you will go out with your friends"
+                else:
+                    return "Sorry, you are not allowed to go out with your friends."
+
+    def family_presentation(self):
+        print(f"Family {self.last_name}")
+        for member in self.members:
+            print(f"{member.first_name} {member.last_name}, {member.age} years old")
+
+family = Family("Doe")
+family.members.append(Person("Jane", 35))
+family.members.append(Person("John", 40))
+family.members.append(Person("Jimmy", 16))
+
+family.born("Baby", 0)
+print(family.check_majority("Jimmy"))
+family.family_presentation()
