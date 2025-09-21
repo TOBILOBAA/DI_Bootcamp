@@ -1,66 +1,81 @@
-# Exercise 1 : Hello World
-print("Hello World\n" * 4)
+# Exercise 1: Random Sentence Generator
+
+import random
+from pathlib import Path
+
+# Step 1: Read words from a file
+def get_words_from_file(file_path):
+    try:
+        with open(file_path, "r") as f:
+            words = f.read().split()   # split by whitespace into list of words
+        return words
+    except FileNotFoundError:
+        print(f"⚠️ File not found! Looked for: {file_path}")
+        return []
 
 
-# Exercise 2 : Some Math
-math = (99**3) * 8
-print(math)
+# Step 2: Generate a random sentence
+def get_random_sentence(length, file_path="words.txt"):
+    words = get_words_from_file(file_path)
+    if not words:  # if file was empty or missing
+        return "No words available."
+    
+    chosen_words = [random.choice(words) for _ in range(length)]
+    sentence = " ".join(chosen_words).lower()
+    return sentence
 
 
-# Exercise 3 : What is the output ?
-# >>> 5 < 3 ... THIS WILL PRINT FALSE. BECUASE 5 IS NOT LESS THAN 3.
-# >>> 3 == 3 ... THIS WILL BE TRUE BECAUSE 3 IS EQUAL TO 3 
-# >>> 3 == "3" ... THIS WILL BE A FALSE BECUASE INTERGER 3 AND STRING 3 ARENT THE SAME
-# >>> "3" > 3 ... THIS WILL BE A FALSE BECAUSE STRING 3 IS NOT THE SAME AS INTERGER 3 
-# >>> "Hello" == "hello" ... THIS IS A TRUE BECAUSE STRING HELLO IS EQUAL TO STRING HELLO
+# Step 3: Main function
+def main():
+    print("✨ This program generates a random sentence.")
+    file_path = Path(__file__).resolve().parent / "words.txt"
+
+    try:
+        length = int(input("Enter a sentence length (2–20): "))
+        if length < 2 or length > 20:
+            print("❌ Please enter a number between 2 and 20.")
+            return
+    except ValueError:
+        print("❌ Invalid input. Please enter a number.")
+        return
+
+    sentence = get_random_sentence(length, file_path)
+    print("✅ Your random sentence is:")
+    print(sentence)
 
 
-#Exercise 4 : Your computer brand
-
-computer_brand = "MacBook Pro"
-print(f"I have a {computer_brand} computer.")
-
-
-#Exercise 5 : Your information
-name = "Tobi"
-age = 78
-shoe_size = 45
-
-info = f"{name} is {age} years old, with a {shoe_size} inches shoe size and he loves humor!!"
-
-print(info)
-
-# Exercise 6 : A & B
-a = 4444
-b = 243
-
-if a > b:
-    print("Hello World")
-
-# Exercise 7 : Odd or Even
-user_input = int(input("Give me a number: "))
-if user_input % 2 == 0:
-    print("Number is even")
-else:
-    print("Number is odd")
-
-# Exercise 8 : What’s your name ?
-
-username = input("What is your name?") 
-
-if username == "Tobi":
-    print("oppa! we got the same name lol!")
-else:
-    print(f"Hey {username} nice to meet you!")
-
-# Exercise 9 : Tall enough to ride a roller coaster   
-
-user_height = int(input("Hey what's your height?"))
-
-if user_height > 145:
-    print("Congrats, you are all tall enough for the ride.")
-else:
-    print("sorry, you gonna hvae to grow some more to ride. Yikes!")
+if __name__ == "__main__":
+    main()
 
 
 
+# Exercise 2: Working with JSON
+import json
+
+# Step 1: Load JSON string into a Python dictionary
+sampleJson = """{ 
+   "company":{ 
+      "employee":{ 
+         "name":"emma",
+         "payable":{ 
+            "salary":7000,
+            "bonus":800
+         }
+      }
+   }
+}"""
+
+data = json.loads(sampleJson)   # convert JSON string -> Python dictionary
+
+# Step 2: Access salary
+salary = data["company"]["employee"]["payable"]["salary"]
+print("Salary:", salary)
+
+# Step 3: Add a birth_date key
+data["company"]["employee"]["birth_date"] = "1990-05-15"
+
+# Step 4: Save to a file
+with open("modified_employee.json", "w") as f:
+    json.dump(data, f, indent=4)
+
+print("Modified JSON saved to 'modified_employee.json'")
