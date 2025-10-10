@@ -1,103 +1,101 @@
 import math
 
-class Circle:
-    def __init__(self, radius=None, diameter=None):
+class Pagination:
+    def __init__(self, items=None, page_size=10):
         """
-        Create a circle by giving EITHER radius OR diameter (not both).
+        items: list (optional). Defaults to empty list.
+        page_size: int (optional). Defaults to 10. Must be > 0.
         """
-        if (radius is None and diameter is None) or (radius is not None and diameter is not None):
-            raise ValueError("Provide exactly one of: radius OR diameter")
+        if items is None:
+            items = []
+        if not isinstance(page_size, int) or page_size <= 0:
+            raise ValueError("page_size must be a positive integer")
 
-        # store radius as the single source of truth
-        if radius is not None:
-            self._radius = float(radius)
-        else:
-            self._radius = float(diameter) / 2.0
+        self.items = list(items)                # keep a copy as list
+        self.page_size = page_size
+        self.current_idx = 0                    # 0-based page index
 
-        if self._radius <= 0:
-            raise ValueError("Radius must be positive")
+        # total_pages is at least 1 (so page 1 shows [] when items empty)
+        self.total_pages = max(1, math.ceil(len(self.items) / self.page_size))
 
-    # --- radius / diameter as linked properties ---
-    @property
-    def radius(self):
-        return self._radius
+    def get_visible_items(self):
+        """
+        Return the list of items visible on the current page.
+        """
+        start = self.current_idx * self.page_size
+        end = start + self.page_size
+        return self.items[start:end]
 
-    @radius.setter
-    def radius(self, value):
-        value = float(value)
-        if value <= 0:
-            raise ValueError("Radius must be positive")
-        self._radius = value
+    # ---------- navigation ----------
+    def go_to_page(self, page_num):
+        """
+        Go to a specific page using 1-based indexing.
+        Raises ValueError if page_num is out of range.
+        """
+        if not isinstance(page_num, int):
+            raise ValueError("page number must be an integer")
+        if page_num < 1 or page_num > self.total_pages:
+            raise ValueError(f"page_num must be between 1 and {self.total_pages}")
+        self.current_idx = page_num - 1
+        return self  # (optional) allow chaining here too
 
-    @property
-    def diameter(self):
-        return 2 * self._radius
+    def first_page(self):
+        self.current_idx = 0
+        return self   # allow method chaining
 
-    @diameter.setter
-    def diameter(self, value):
-        value = float(value)
-        if value <= 0:
-            raise ValueError("Diameter must be positive")
-        self._radius = value / 2.0
+    def last_page(self):
+        self.current_idx = self.total_pages - 1
+        return self   # allow method chaining
 
-    # --- computed attribute ---
-    def area(self):
-        return math.pi * (self._radius ** 2)
+    def next_page(self):
+        if self.current_idx < self.total_pages - 1:
+            self.current_idx += 1
+        return self   # allow method chaining
 
-    # --- printing (dunder) ---
+    def previous_page(self):
+        if self.current_idx > 0:
+            self.current_idx -= 1
+        return self   # allow method chaining
+
+    # ---------- bonus ----------
     def __str__(self):
-        # user-friendly text
-        return f"Circle(r={self.radius:.2f}, d={self.diameter:.2f}, area={self.area():.2f})"
-
-    def __repr__(self):
-        # debug-friendly text
-        return f"Circle(radius={self.radius})"
-
-    # --- arithmetic: add circles -> new circle ---
-    def __add__(self, other):
         """
-        Circle + Circle -> new Circle with radius = r1 + r2
-        Circle + number -> new Circle with radius = r1 + number
+        Show the items on the current page, one per line.
         """
-        if isinstance(other, Circle):
-            return Circle(radius=self.radius + other.radius)
-        elif isinstance(other, (int, float)):
-            return Circle(radius=self.radius + float(other))
-        return NotImplemented
-
-    # support number + Circle
-    def __radd__(self, other):
-        return self.__add__(other)
-
-    # --- comparisons (so we can check bigger/equal and sort) ---
-    def __eq__(self, other):
-        if not isinstance(other, Circle):
-            return NotImplemented
-        return abs(self.radius - other.radius) < 1e-9
-
-    def __lt__(self, other):
-        if not isinstance(other, Circle):
-            return NotImplemented
-        return self.radius < other.radius
+        return "\n".join(str(x) for x in self.get_visible_items())
 
 
-# ---------------------------
-# Quick demo (you can comment this out in submission)
-# ---------------------------
+# --------------------------
+# Test cases from the brief
+# --------------------------
 if __name__ == "__main__":
-    c1 = Circle(radius=3)
-    c2 = Circle(diameter=10)   # radius = 5
-    c3 = Circle(radius=4)
+    alphabetList = list("abcdefghijklmnopqrstuvwxyz")
+    p = Pagination(alphabetList, 4)
 
-    print(c1)                  # prints radius, diameter, area
-    print("c1 area:", round(c1.area(), 2))
+    print(p.get_visible_items())
+    # ['a', 'b', 'c', 'd']
 
-    c_sum = c1 + c2
-    print("c1 + c2 ->", c_sum)
+    p.next_page()
+    print(p.get_visible_items())
+    # ['e', 'f', 'g', 'h']
 
-    print("Is c2 bigger than c1?", c2 > c1)   # comparison
-    print("Is c1 equal to c3?", c1 == c3)
+    p.last_page()
+    print(p.get_visible_items())
+    # ['y', 'z']
 
-    circles = [c1, c2, c3, c_sum]
-    circles.sort()             # uses __lt__
-    print("Sorted by radius:", circles)
+    # This should raise ValueError (page 10 doesn't exist: total_pages = ceil(26/4)=7)
+    try:
+        p.go_to_page(10)
+        print(p.current_idx + 1)
+    except ValueError as e:
+        print("ValueError:", e)
+
+    # This should raise ValueError (page numbers start at 1)
+    try:
+        p.go_to_page(0)
+    except ValueError as e:
+        print("ValueError:", e)
+
+    # Bonus demo: __str__
+    print("\nCurrent page as text:")
+    print(str(p))
