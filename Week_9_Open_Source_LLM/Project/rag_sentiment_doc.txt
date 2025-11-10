@@ -1,0 +1,157 @@
+﻿Tweet Sentiment Guidelines — 2-Class (Positive / Negative)
+1) Goal
+Given a single tweet, classify the author’s sentiment toward the main subject as positive or negative. Return a short rationale and a confidence score.
+Judge the author’s attitude (tone/stance), not factual correctness.
+________________
+
+
+2) Output (strict JSON)
+{
+  "label": "positive|negative",
+  "confidence": 0.0,
+  "rationale": "≤ 30 words explaining the cues you used",
+  "subject": "optional: main entity/topic (e.g., 'iPhone update')"
+}
+________________
+
+
+3) Fast Decision Rules
+1. Clear praise / joy / approval → positive
+
+Cues: love, great, awesome, happy, impressed, “W”, 🔥 🎉 🙌 💯 🚀
+
+2. Clear complaint / frustration / blame → negative
+
+Cues: hate, awful, broken, scam, disappointed, “L”, trash, 🤮 👎 😡
+
+3. If signals conflict:
+
+   * Tally cues (see Scoring below).
+
+   * If negative cues outweigh positives → negative; else positive.
+
+      4. If basically no cues (neutral-ish text):
+
+         * Apply the tie-break policy (below) and set low confidence (≈0.50–0.55).
+
+________________
+
+
+4) Scoring Heuristic (simple and fast)
+Assign a polarity score and decide by sign:
+            * Strong positive word/emoji: +2
+
+            * Mild positive word/emoji: +1
+
+            * Strong negative word/emoji: −2
+
+            * Mild negative word/emoji: −1
+
+            * Negation flips (“not good” → negative, “not bad” → mild positive)
+
+            * Sarcasm cue (🙃, quotes around praise, mismatch with facts): tilt −1 unless clearly positive otherwise
+
+Decision:
+               * Score > 0 → positive
+
+               * Score < 0 → negative
+
+               * Score = 0 → tie-break policy
+
+________________
+
+
+5) Tie-Break Policy (no clear cues)
+Because this is a 2-class setup, you must choose one:
+                  * Conservative (default for support/product domains):
+
+If no clear praise is present, classify negative with confidence ≤ 0.55 and rationale “no positive cues; neutral wording interpreted conservatively.”
+
+                  * Optimistic (use only if specified by app):
+
+If no clear complaint is present, classify positive with confidence ≤ 0.55 and rationale “no negative cues; neutral wording interpreted optimistically.”
+
+(If your application doesn’t specify, use the Conservative policy.)
+________________
+
+
+6) Language Cues & Tricks
+                     * Intensifiers: “really/so/super” amplify the nearest sentiment.
+
+                     * Questions: Genuine info-seeking with no tone → usually tie-break.
+
+                     * Emoji-only: Single strong emoji can decide (🔥 → positive, 😬/🤮 → negative).
+
+                     * Retweets/links: Judge the user’s added text (their caption).
+
+                     * Sarcasm: “Great job… 🙃 crashed again” → negative.
+
+________________
+
+
+7) Confidence Rubric
+                        * 0.85–1.00: strong, consistent cues
+
+                        * 0.70–0.84: multiple cues but mild conflict
+
+                        * 0.50–0.69: weak/ambiguous; tie-break applied
+
+________________
+
+
+8) Few-Shot Examples (2-class)
+Clear Positive
+Tweet: “Shipped my first iOS app — the team crushed it! 🚀🙌”
+{"label":"positive","confidence":0.93,"rationale":"Celebration + praise + positive emojis.","subject":"iOS app launch"}
+Tweet: “New feature finally fixed my bug. W.”
+{"label":"positive","confidence":0.88,"rationale":"Relief + ‘W’ (win) slang → positive.","subject":"new feature"}
+Clear Negative
+Tweet: “This update bricked my phone. Never again.”
+{"label":"negative","confidence":0.97,"rationale":"Severe complaint and rejection phrase.","subject":"update"}
+Tweet: “Customer support is a joke… waited 2 hours.”
+{"label":"negative","confidence":0.91,"rationale":"Mocking tone + long wait complaint.","subject":"customer support"}
+Mixed Signals → Decide by Score
+Tweet: “Love the camera, but the battery is awful.”
+                           * Score: +2 (love) + (but → contrast) −2 (awful) → 0 → Conservative tie-break = negative
+
+{"label":"negative","confidence":0.55,"rationale":"Strong pro & con balance; conservative tie-break to negative.","subject":"phone"}
+Neutral-ish Text → Tie-Break
+Tweet: “Event starts at 7pm. Link below.”
+                              * No affect words; no emojis → Conservative tie-break = negative, low confidence
+
+{"label":"negative","confidence":0.52,"rationale":"No sentiment cues; conservative policy applied.","subject":"event"}
+(If using Optimistic mode, pick positive at ~0.52 instead.)
+Sarcasm
+Tweet: “Amazing stability after the patch 🙃 crashed twice already.”
+{"label":"negative","confidence":0.9,"rationale":"Sarcastic praise + crash evidence → negative.","subject":"patch"}
+Emoji-Driven
+Tweet: “We back 🏆💯”
+{"label":"positive","confidence":0.87,"rationale":"Trophy + 100 indicate celebration.","subject":"team performance"}
+Tweet: “That rollout… 😬”
+{"label":"negative","confidence":0.75,"rationale":"Grimace emoji expresses discomfort.","subject":"rollout"}
+________________
+
+
+9) Retrieval Guidance (if present)
+                                 * Use retrieved snippets only to clarify subject if the tweet is vague.
+
+                                 * Do not let external text override clear in-tweet sentiment cues.
+
+                                 * If conflict: prefer the tweet’s own wording/emojis.
+
+________________
+
+
+10) Quick Cheat Sheet
+Use positive when…
+	Use negative when…
+	explicit praise, joy, celebration, “W”, 🔥🎉🙌
+	explicit complaint, anger, “L”, broken, scam, 🤮👎😡
+	mild positives with no negatives
+	mild negatives with no positives
+	tie-break in Optimistic mode
+	tie-break in Conservative mode (default)
+	________________
+
+
+Implementation tip: In code, keep a tiny lexicon with weights (+2/+1/−1/−2) and a sarcasm detector (keywords + 🙃). Sum weights, apply tie-break, then scale confidence from cue strength and conflicts.
